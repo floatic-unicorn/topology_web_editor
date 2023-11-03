@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Topology Editor</title>
+    <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+</head>
+<body>
+    <!-- <canvas id="graphCanvas" width="800" height="400"></canvas> -->
+
+    <label for="inputFile">Enter file to load from:</label><br>
+    <input type="text" id="inputFile" accept=".yaml, .yml" placeholder="Enter filepath to load from">
+    <button id="loadButton" onclick="loadFromFile()">Load</button><br>
+
+    <br><label for="outputFile">Enter file to save to:</label><br>
+    <input type="text" id="outputFile" accept=".yaml, .yml" placeholder="Enter filepath to save to">
+    <button id="saveButton" onclick="saveToFile()">Save</button><br>
+
+    <br><button id="printTopology" onclick="printTopology()">Print</button>
+
+    <script src="functions.js"></script>
+    <script src="topology.js"></script>
+
+</body>
+</html>
