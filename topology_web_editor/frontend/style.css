@@ -1,0 +1,18 @@
+/* Style for the marker element */
+.marker {
+    position: absolute; /* Allows absolute positioning within the container */
+    width: 5px;
+    height: 5px;
+    background-color: rgb(36, 171, 76);
+    border-radius: 50%; /* Makes it a circle */
+    cursor: pointer; /* Indicates it's clickable */
+}
+
+/* Style for the image container */
+.image-container {
+    position: relative; /* Required for absolute positioning of markers */
+    width: 800px; /* Set the width of the container */
+    height: 600px; /* Set the height of the container */
+    background-image: url('your-image.jpg'); /* Set the background image */
+    background-size: cover; /* Adjusts the image to cover the container */
+}

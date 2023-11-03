@@ -12,7 +12,6 @@ topology_ = Topology()
 @app.route('/load', methods=['POST'])
 def load_from_file():
 
-    print('load_from_file called')
     data = request.get_json()
 
     if 'filePath' not in data:
@@ -29,10 +28,8 @@ def load_from_file():
         for idx in range(len(topology['Vertex'])):
             topology_.vertices[topology['Vertex'][idx]['id']] = \
                 Vertex(id=topology['Vertex'][idx]['id'],
-                frame_id=topology['Vertex'][idx]['frame_id'],
                 x=topology['Vertex'][idx]['x'],
-                y=topology['Vertex'][idx]['y'],
-                enabled=topology['Vertex'][idx]['enabled'])
+                y=topology['Vertex'][idx]['y'])
             
     if 'Edge' in topology:
         for idx in range(len(topology['Edge'])):
@@ -86,6 +83,15 @@ def save_to_file():
         file.write(serialized_data)
 
     return jsonify(success=True)
+
+@app.route('/get_vertex_pixels', methods=['GET'])
+def get_vertices():
+    vertex_list = []
+    for id in topology_.vertices:
+        vertex_list.append({'id': topology_.vertices[id].id,
+                            'x': int(topology_.vertices[id].x-topology_.origin[0])/topology_.resolution,
+                            'y': int(topology_.vertices[id].y-topology_.origin[1])/topology_.resolution})
+    return jsonify(vertices=vertex_list)
 
 
 @app.route('/print_vertex', methods=['GET'])
