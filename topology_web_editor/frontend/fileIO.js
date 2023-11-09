@@ -30,13 +30,10 @@ function saveToFile() {
 }
 
 function loadFromFile() {
-
     const fileInput = document.getElementById('inputFile');
     const statusDiv = document.getElementById('status');
-    const markerContainer = document.getElementById('markerContainer');  // Reference to the marker container
-
-
     const filename = fileInput.value;
+
     alert("Requested data from " + filename);
 
     if (filename) {
@@ -52,42 +49,13 @@ function loadFromFile() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Fetch vertices and create markers after topology is loaded
                 fetch('http://127.0.0.1:5000/get_vertex_pixels', {
                     method: 'GET'
                 })
                 .then(response => response.json())
                 .then(data => {
                     const vertices = data.vertices;
-
-                    const image = document.querySelector('img[src="map.png"][alt="Navigation Map"]');
-                    const imageRect = image.getBoundingClientRect();
-                    const imageX = imageRect.left;
-                    const imageY = imageRect.top;
-
-                    vertices.forEach(vertex => {
-                        const marker = document.createElement('div');
-                        marker.className = 'marker';
-                        const xOnImage = -imageX - 300+ vertex.x;
-                        const yOnImage = -imageY + 150 + vertex.y;
-                        marker.style.left = xOnImage + 'px';
-                        marker.style.top = yOnImage + 'px';
-
-                        // Make the marker draggable using interact.js
-                        interact(marker)
-                            .draggable({
-                                onmove: (event) => {
-                                    const target = event.target;
-                                    const x = (parseFloat(target.style.left) || 0) + event.dx;
-                                    const y = (parseFloat(target.style.top) || 0) + event.dy;
-
-                                    target.style.left = x + 'px';
-                                    target.style.top = y + 'px';
-                                }
-                            });
-
-                        markerContainer.appendChild(marker);
-                    });
+                    loadMarkers(vertices);
                 })
                 .catch(error => {
                     alert('Error loading topology markers.');

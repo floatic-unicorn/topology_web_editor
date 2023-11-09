@@ -8,11 +8,13 @@
     cursor: pointer; /* Indicates it's clickable */
 }
 
-/* Style for the image container */
 .image-container {
-    position: relative; /* Required for absolute positioning of markers */
-    width: 800px; /* Set the width of the container */
-    height: 600px; /* Set the height of the container */
-    background-image: url('your-image.jpg'); /* Set the background image */
-    background-size: cover; /* Adjusts the image to cover the container */
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#mapImage {
+    width: 30;
+    height: auto;
 }

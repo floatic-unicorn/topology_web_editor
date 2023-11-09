@@ -15,5 +15,5 @@ class Topology:
     def __init__(self):
         self.vertices = {}
         self.edges = {}
-        self.origin = [-23.433162, -12.713464]
+        self.origin = [-37.602316, -32.087689]
         self.resolution = 0.05
