@@ -113,5 +113,19 @@ def print_edges():
 
     return jsonify(success=True, data=edge_list)
 
+@app.route('/update_vertex_position', methods=['POST'])
+def update_vertex():
+
+    data = request.get_json()
+    print('Update vertex', data['id'])
+
+    id = data['id']
+    x = data['x']
+    y = data['y']
+
+    topology_.vertices[id].update(x, y)
+    return jsonify(success=True)
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)

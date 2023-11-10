@@ -8,6 +8,7 @@ function loadMarkers(vertices) {
     vertices.forEach(vertex => {
         const marker = document.createElement('div');
         marker.className = 'marker';
+        marker.id = vertex.id;
         const xOnImage = -imageX + vertex.x;
         const yOnImage = -imageY + vertex.y;
         marker.style.left = xOnImage + 'px';
