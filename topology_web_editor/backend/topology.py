@@ -6,8 +6,9 @@ class Vertex(BaseModel):
     y: float
 
     def update(self, x, y):
-        self.x = x
-        self.y = y
+        self.x += x
+        self.y += y
+        return self
 
 class Edge(BaseModel):
     src: str

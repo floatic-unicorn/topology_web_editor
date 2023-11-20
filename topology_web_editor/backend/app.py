@@ -64,8 +64,13 @@ def save_to_file():
     vertex_list = [vertex for vertex in topology_.vertices]
     edge_list = [edge for edge in topology_.edges]
 
-    for idx, value in enumerate(vertex_list):
-        topology['Vertex'][idx] = value
+    for idx, id in enumerate(vertex_list):
+        topology['Vertex'][idx] = {}
+        topology['Vertex'][idx]['id'] = topology_.vertices[id].id
+        topology['Vertex'][idx]['x'] = topology_.vertices[id].x
+        topology['Vertex'][idx]['y'] = topology_.vertices[id].y
+        topology['Vertex'][idx]['enabled'] = True
+        topology['Vertex'][idx]['frame_id'] = "map"
     
     count = 0
     for edge_src in edge_list:
@@ -75,6 +80,7 @@ def save_to_file():
             topology['Edge'][count]['dst'] = edge.dst
             topology['Edge'][count]['type'] = edge.type
             topology['Edge'][count]['cost'] = edge.cost
+            topology['Edge'][count]['enabled'] = True
             count += 1
 
     serialized_data = yaml.dump(topology)
@@ -120,10 +126,10 @@ def update_vertex():
     print('Update vertex', data['id'])
 
     id = data['id']
-    x = data['x']
-    y = data['y']
+    dx = data['dx']*topology_.resolution
+    dy = data['dy']*topology_.resolution
 
-    topology_.vertices[id].update(x, y)
+    topology_.vertices[id] = topology_.vertices[id].update(dx, dy)
     return jsonify(success=True)
 
 
