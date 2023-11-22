@@ -8,13 +8,29 @@
     cursor: pointer; /* Indicates it's clickable */
 }
 
-.image-container {
+.imageContainer {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    position: relative;
+}
+
+.markerContainer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 1974px;
+    height: auto;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 #mapImage {
-    width: 30;
+    position:absolute;
+    left: 0;
+    bottom: 0;
+    width: 1974px;
     height: auto;
+    display: block;
 }
+
