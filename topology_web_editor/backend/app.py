@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import yaml
 from topology import Topology, Vertex, Edge
+from utils import euler_from_quaternion
+import math
 
 app = Flask(__name__)
 CORS(app)
@@ -94,9 +96,21 @@ def save_to_file():
 def get_vertices():
     vertex_list = []
     for id in topology_.vertices:
+        x_val = (topology_.vertices[id].x - topology_.map_origin[0])/topology_.resolution
+        y_val = (topology_.vertices[id].y - topology_.map_origin[1])/topology_.resolution
+
+        _, _, yaw = euler_from_quaternion(topology_.topology_orient[0],
+                                    topology_.topology_orient[1],
+                                    topology_.topology_orient[2],
+                                    topology_.topology_orient[3])
+
+        x_val_ = (x_val - topology_.topology_origin[0]) * math.cos(-yaw) - (y_val - topology_.topology_origin[1]) * math.sin(-yaw)
+        y_val_ = (x_val - topology_.topology_origin[0]) * math.sin(-yaw) + (y_val - topology_.topology_origin[1]) * math.cos(-yaw)
+
         vertex_list.append({'id': topology_.vertices[id].id,
-                            'x': int(topology_.vertices[id].x-topology_.origin[0])/topology_.resolution,
-                            'y': int(topology_.vertices[id].y-topology_.origin[1])/topology_.resolution})
+                            'x': x_val_,
+                            'y': y_val_})
+
     return jsonify(vertices=vertex_list)
 
 

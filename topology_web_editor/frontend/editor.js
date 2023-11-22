@@ -8,8 +8,8 @@ function loadMarkers(vertices) {
         const marker = document.createElement('div');
         marker.className = 'marker';
         marker.id = vertex.id;
-        const xOnImage = imageLeft + vertex.x;
-        const yOnImage = imageBottom + vertex.y;
+        const xOnImage = vertex.x;
+        const yOnImage = vertex.y;
         marker.style.left = xOnImage + 'px';
         marker.style.bottom = yOnImage + 'px';
 
@@ -19,7 +19,7 @@ function loadMarkers(vertices) {
                 onmove: (event) => {
                     const target = event.target;
                     const x = (parseFloat(target.style.left)) + event.dx;
-                    const y = (parseFloat(target.style.bottom)) + event.dy;
+                    const y = (parseFloat(target.style.bottom)) - event.dy;
 
                     target.style.left = x + 'px';
                     target.style.bottom = y + 'px';
