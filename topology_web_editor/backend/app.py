@@ -11,7 +11,7 @@ CORS(app)
 topology_ = Topology()
 
 
-@app.route('/load', methods=['POST'])
+@app.route('/load_topology', methods=['POST'])
 def load_from_file():
 
     data = request.get_json()
@@ -48,6 +48,38 @@ def load_from_file():
                         dst=topology['Edge'][idx]['dst'],
                         cost=topology['Edge'][idx]['cost'],
                         type=topology['Edge'][idx]['type']))
+
+    return jsonify(success=True)
+
+@app.route('/load_map_data', methods=['POST'])
+def load_data_from_file():
+
+    data = request.get_json()
+
+    if 'filePath' not in data:
+        return jsonify(success=False, error='No filepath provided')
+
+    filename = data['filePath']
+
+    with open(filename, 'r') as file:
+        map_data = yaml.safe_load(file)
+        if map_data is None:
+            pass
+
+    if 'resolution' in map_data:
+        topology_.resolution = map_data['resolution']
+    
+    if 'origin' in map_data:
+        topology_.map_origin.append(map_data['origin'][0])
+        topology_.map_origin.append(map_data['origin'][1])
+
+    if 'topology' in map_data:
+        topology_.topology_origin.append(map_data['topology']['origin']['position']['x'])
+        topology_.topology_origin.append(map_data['topology']['origin']['position']['y'])
+        topology_.topology_orient.append(map_data['topology']['origin']['orientation']['x'])
+        topology_.topology_orient.append(map_data['topology']['origin']['orientation']['y'])
+        topology_.topology_orient.append(map_data['topology']['origin']['orientation']['z'])
+        topology_.topology_orient.append(map_data['topology']['origin']['orientation']['w'])
 
     return jsonify(success=True)
 

@@ -29,7 +29,7 @@ function saveToFile() {
     }
 }
 
-function loadFromFile() {
+function loadTopologyFromFile() {
     const fileInput = document.getElementById('inputFile');
     const statusDiv = document.getElementById('status');
     const filename = fileInput.value;
@@ -39,7 +39,7 @@ function loadFromFile() {
     if (filename) {
         const requestData = { 'filePath': filename };
 
-        fetch('http://127.0.0.1:5000/load', {
+        fetch('http://127.0.0.1:5000/load_topology', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -68,6 +68,37 @@ function loadFromFile() {
             alert('Error loading YAML file.');
         });
     }
+}
+
+function loadMapFromFile() {
+    const fileInput = document.getElementById('dataFile');
+    const statusDiv = document.getElementById('status');
+    const filename = fileInput.value;
+
+    alert("Requested data from " + filename);
+
+    if (filename) {
+        const requestData = { 'filePath': filename };
+
+        fetch('http://127.0.0.1:5000/load_map_data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                statusDiv.textContent = 'Map data loaded successfully!';
+            } else {
+                statusDiv.textContent = 'Error loading YAML file.';
+            }
+        })
+        .catch(error => {
+            statusDiv.textContent = 'Error loading YAML file.';
+        });
+    }    
 }
 
 function printTopology() {

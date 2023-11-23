@@ -19,7 +19,7 @@
     position: absolute;
     left: 0;
     bottom: 0;
-    width: 1974px;
+    width: 1974px; /* Same as image actual width */
     height: auto;
     padding: 10px;
     border-radius: 5px;
@@ -29,7 +29,7 @@
     position:absolute;
     left: 0;
     bottom: 0;
-    width: 1974px;
+    width: 1974px; /* Same as image actual width */
     height: auto;
     display: block;
 }

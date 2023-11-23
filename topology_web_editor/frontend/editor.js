@@ -36,7 +36,7 @@ function loadMarkers(vertices) {
 function updateVertexPosition(marker, dx, dy) {
 
     const requestData = {
-        'id': marker.id,  // You can add an id to each marker for identification
+        'id': marker.id,
         'dx': dx,
         'dy': dy,
     };

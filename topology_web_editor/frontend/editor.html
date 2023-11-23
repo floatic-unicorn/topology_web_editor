@@ -13,10 +13,14 @@
         <div id="markerContainer"></div>
     </div>
 
-    <br><label for="inputFile">Enter file to load from:</label><br>
-    <input type="text" id="inputFile" accept=".yaml, .yml" placeholder="Enter filepath to load from">
-    <button id="loadButton" onclick="loadFromFile()">Load</button><br>
+    <br><label for="dataFile">Enter map file to load from:</label><br>
+    <input type="text" id="dataFile" accept=".yaml, .yml" placeholder="Enter map filepath to load from">
+    <button id="loadMapDataButton" onclick="loadMapFromFile()">Load</button><br>
 
+    <br><label for="inputFile">Enter topology file to load from:</label><br>
+    <input type="text" id="inputFile" accept=".yaml, .yml" placeholder="Enter topology filepath to load from">
+    <button id="loadTopologyButton" onclick="loadTopologyFromFile()">Load</button><br>
+    
     <br><label for="outputFile">Enter file to save to:</label><br>
     <input type="text" id="outputFile" accept=".yaml, .yml" placeholder="Enter filepath to save to">
     <button id="saveButton" onclick="saveToFile()">Save</button><br>
