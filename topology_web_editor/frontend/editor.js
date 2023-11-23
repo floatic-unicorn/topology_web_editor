@@ -24,7 +24,7 @@ function loadMarkers(vertices) {
                     target.style.left = x + 'px';
                     target.style.bottom = y + 'px';
 
-                    updateVertexPosition(target, event.dx, event.dy);
+                    updateVertexPosition(target, event.dx, -event.dy);
                 }
             });
 

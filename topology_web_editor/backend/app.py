@@ -140,10 +140,20 @@ def update_vertex():
     print('Update vertex', data['id'])
 
     id = data['id']
-    dx = data['dx']*topology_.resolution
-    dy = data['dy']*topology_.resolution
+    # Convert pixel to coordinate dx,dy
+    dx = data['dx'] * topology_.resolution
+    dy = data['dy'] * topology_.resolution
 
-    topology_.vertices[id] = topology_.vertices[id].update(dx, dy)
+    _, _, yaw = euler_from_quaternion(topology_.topology_orient[0],
+                                topology_.topology_orient[1],
+                                topology_.topology_orient[2],
+                                topology_.topology_orient[3])
+
+    dx_ = dx * math.cos(yaw) - dy * math.sin(yaw)
+    dy_ = dx * math.sin(yaw) + dy * math.cos(yaw)
+
+
+    topology_.vertices[id] = topology_.vertices[id].update(dx_, dy_)
     return jsonify(success=True)
 
 
