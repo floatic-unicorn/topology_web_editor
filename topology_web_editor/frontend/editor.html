@@ -6,22 +6,25 @@
     <script type="module" src="interact.min.js"></script>
     <script src="fileIO.js"></script>
     <script src="editor.js"></script>
+    <script src="kb_handler.js"></script>
 </head>
 <body>
+    <h1>Topology Web Editor</h1>
+
     <div id="imageContainer">
         <img src="map.png" alt="Navigation Map" id="mapImage"><br>
         <div id="markerContainer"></div>
     </div>
 
-    <br><label for="dataFile">Enter map file to load from:</label><br>
-    <input type="text" id="dataFile" accept=".yaml, .yml" placeholder="Enter map filepath">
+    <label for="dataFile">Enter map file:</label><br>
+    <input type="text" id="dataFile" accept=".yaml, .yml" placeholder="/opt/floatic/config/env/map/navigation/map.yaml" onkeydown="handleTab(event, 'dataFile')" oninput="handleInput(event,'dataFile')">
     <button id="loadMapDataButton" onclick="loadMapFromFile()">Load</button><br>
 
-    <br><label for="inputFile">Enter topology file to load from:</label><br>
-    <input type="text" id="inputFile" accept=".yaml, .yml" placeholder="Enter topology filepath">
+    <br><label for="inputFile">Enter topology file:</label><br>
+    <input type="text" id="inputFile" accept=".yaml, .yml" placeholder="/opt/floatic/config/env/map/navigation/topology.yaml" onkeydown="handleTab(event, 'inputFile')" oninput="handleInput(event,'inputFile')">
     <button id="loadTopologyButton" onclick="loadTopologyFromFile()">Load</button><br>
 
-    <br><label for="outputFile">Enter file to save to:</label><br>
+    <br><label for="outputFile">Enter output topology file:</label><br>
     <input type="text" id="outputFile" accept=".yaml, .yml" placeholder="Enter output filepath">
     <button id="saveButton" onclick="saveToFile()">Save</button><br>
 
