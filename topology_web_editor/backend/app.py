@@ -221,12 +221,19 @@ def add_new_vertex():
     y = y * topology_.resolution
 
     _, _, yaw = euler_from_quaternion(topology_.topology_orient[0],
-                                topology_.topology_orient[1],
-                                topology_.topology_orient[2],
-                                topology_.topology_orient[3])
+                                    topology_.topology_orient[1],
+                                    topology_.topology_orient[2],
+                                    topology_.topology_orient[3])
+
+    x = x - topology_.topology_origin[0]
+    y = y - topology_.topology_origin[1]
 
     x_ = x * math.cos(yaw) - y * math.sin(yaw)
     y_ = x * math.sin(yaw) + y * math.cos(yaw)
+
+
+    x_ = x_ + topology_.map_origin[0]
+    y_ = y_ + topology_.map_origin[1]
 
     print("Add new vertex {} at {},{}".format(new_id, x_, y_))
 
