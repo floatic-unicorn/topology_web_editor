@@ -9,7 +9,7 @@
     <script src="kb_handler.js"></script>
 </head>
 <body>
-    <h1>Topology Web Editor</h1>
+    <h1>Topology Editor</h1>
 
     <div id="imageContainer">
         <img src="map.png" alt="Navigation Map" id="mapImage"><br>
@@ -28,7 +28,11 @@
     <input type="text" id="outputFile" accept=".yaml, .yml" placeholder="Enter output filepath">
     <button id="saveButton" onclick="saveToFile()">Save</button><br>
 
-    <br><button id="printTopology" onclick="printTopology()">Print</button>
+    <br><label for="newEdge">Enter src, dest vertexID:</label><br>
+    <input type="text" id="newEdge" placeholder="ex. T_3,T_5,3.0,rack">
+    <button id="connectEdge" onclick="addEdge()">Update</button><br>
+
+    <script>addNewVertex()</script>
 
 </body>
 </html>

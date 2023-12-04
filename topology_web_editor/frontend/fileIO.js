@@ -49,13 +49,14 @@ function loadTopologyFromFile() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                fetch('http://127.0.0.1:5000/get_vertex_pixels', {
+                fetch('http://127.0.0.1:5000/get_visualized_topology', {
                     method: 'GET'
                 })
                 .then(response => response.json())
                 .then(data => {
                     const vertices = data.vertices;
-                    loadMarkers(vertices);
+                    const edges = data.edges;
+                    loadMarkers(vertices, edges);
                 })
                 .catch(error => {
                     alert('Error loading topology markers.');
@@ -98,7 +99,7 @@ function loadMapFromFile() {
         .catch(error => {
             statusDiv.textContent = 'Error loading YAML file.';
         });
-    }    
+    }
 }
 
 function printTopology() {
