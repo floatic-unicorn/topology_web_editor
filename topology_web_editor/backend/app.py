@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import yaml
 from topology import Topology, Vertex, Edge
-from utils import euler_from_quaternion
+from utils import euler_from_quaternion, get_distance
 import math
 
 app = Flask(__name__)
@@ -267,6 +267,37 @@ def add_new_edge():
                   type = type)]
         
     return jsonify(success=True)
+
+@app.route('/connect_edges', methods=['POST'])
+def connect_edges():
+
+    data = request.get_json()
+    
+    idList = data['idList']
+    type = data['type']
+
+    for i in range(len(idList)-1):
+        srcID = 'T_' + str(idList[i])
+        dstID = 'T_' + str(idList[i+1])
+
+        if srcID not in topology_.vertices or dstID not in topology_.vertices:
+            continue
+
+        cost = get_distance(topology_.vertices[srcID],
+                            topology_.vertices[dstID])
+        
+        if srcID in topology_.edges:
+            topology_.edges[srcID].append(Edge(src = srcID,
+                                               dst = dstID,
+                                               cost = cost,
+                                               type = type))
+        else:
+            topology_.edges[srcID] = [Edge(src = srcID,
+                                               dst = dstID,
+                                               cost = cost,
+                                               type = type)]
+    return jsonify(success=True)
+
 
 
 if __name__ == '__main__':

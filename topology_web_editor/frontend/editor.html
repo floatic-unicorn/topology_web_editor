@@ -28,9 +28,14 @@
     <input type="text" id="outputFile" accept=".yaml, .yml" placeholder="Enter output filepath">
     <button id="saveButton" onclick="saveToFile()">Save</button><br>
 
-    <br><label for="newEdge">Enter src, dest vertexID:</label><br>
+    <br><label for="newEdge">Enter srcID,dstID,cost,rack:</label><br>
     <input type="text" id="newEdge" placeholder="ex. T_3,T_5,3.0,rack">
     <button id="connectEdge" onclick="addEdge()">Update</button><br>
+
+
+    <br><label for="connectEdges">Connect edge range with default cost: </label><br>
+    <input type="text" id="connectEdges" placeholder="[3,10,5],rack">
+    <button id="connectEdges" onclick="connectEdges()">Update</button><br>
 
     <script>addNewVertex()</script>
 

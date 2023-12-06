@@ -157,3 +157,42 @@ function addEdge() {
         statusDiv.textContent = 'Error loading add edge';
     });
 }
+
+function connectEdges() {
+    const inputValue = document.getElementById('connectEdges').value;
+
+    var match = inputValue.match(/^\[(.*?)\],(.*)$/);
+
+    if (match) {
+        var idList = match[1].split(',').map(Number);
+        var type = match[2];
+
+        console.log('ID List:', idList);
+        console.log('Type:', type);
+    } else {
+        console.error('Invalid input format. Please enter in the format "[3,1,5],rack".');
+    }
+
+    const requestData = {'idList': idList,
+                         'type' : type                  
+                        };
+
+    fetch('http://127.0.0.1:5000/connect_edges', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            statusDiv.textContent = 'Connected edges successfully!';
+        } else {
+            statusDiv.textContent = 'Error connecting edge.';
+        }
+    })
+    .catch(error => {
+        statusDiv.textContent = 'Error loading connect edges';
+    });
+}

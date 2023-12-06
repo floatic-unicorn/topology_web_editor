@@ -1,4 +1,5 @@
 import math
+from topology import Vertex
 
 def euler_from_quaternion(x, y, z, w):
     t0 = 2.0 * (w*x + y*z)
@@ -19,3 +20,9 @@ def euler_from_quaternion(x, y, z, w):
     yaw_z = math.atan2(t3, t4)
 
     return roll_x, pitch_y, yaw_z
+
+def get_distance(src: Vertex, dst: Vertex):
+    src_pts = [src.x, src.y]
+    dst_pts = [dst.x, dst.y]
+
+    return math.dist(src_pts, dst_pts)
