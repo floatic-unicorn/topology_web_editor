@@ -1,11 +1,16 @@
 /* Style for the marker element */
 .marker {
-    position: absolute; /* Allows absolute positioning within the container */
+    position: absolute;
     width: 5px;
     height: 5px;
     background-color: rgb(36, 171, 76);
-    border-radius: 50%; /* Makes it a circle */
-    cursor: pointer; /* Indicates it's clickable */
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.line {
+    position: absolute;
+    border: 2px solid orange;
 }
 
 h1 {

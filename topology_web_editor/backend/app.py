@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import yaml
 from topology import Topology, Vertex, Edge
-from utils import euler_from_quaternion
+from utils import euler_from_quaternion, get_distance
 import math
 
 app = Flask(__name__)
@@ -124,8 +124,8 @@ def save_to_file():
 
     return jsonify(success=True)
 
-@app.route('/get_vertex_pixels', methods=['GET'])
-def get_vertices():
+@app.route('/get_visualized_topology', methods=['GET'])
+def get_visualized_topology():
     vertex_list = []
     for id in topology_.vertices:
         x_val = (topology_.vertices[id].x - topology_.map_origin[0])/topology_.resolution
@@ -142,8 +142,22 @@ def get_vertices():
         vertex_list.append({'id': topology_.vertices[id].id,
                             'x': x_val_,
                             'y': y_val_})
+        
+    edge_list = []
+    for id in topology_.vertices:
 
-    return jsonify(vertices=vertex_list)
+        if id not in topology_.edges:
+            continue
+
+        edges = topology_.edges[id]
+
+        for edge in edges:
+            edge_list.append({'src': edge.src,
+                              "dst": edge.dst,
+                              'cost': edge.cost})
+
+    return jsonify(vertices=vertex_list,
+                   edges = edge_list)
 
 
 @app.route('/print_vertex', methods=['GET'])
@@ -187,6 +201,103 @@ def update_vertex():
 
     topology_.vertices[id] = topology_.vertices[id].update(dx_, dy_)
     return jsonify(success=True)
+
+
+@app.route('/add_new_vertex', methods=['POST'])
+def add_new_vertex():
+    
+    data = request.get_json()
+    
+    x = data['x']
+    y = data['y']
+
+    numbers = [int(id.split('_')[1]) for id in topology_.vertices]
+    if not numbers:
+        new_id = 'T_0'
+    else:
+        new_id = 'T_' + str(max(numbers)+1)
+
+    x = x * topology_.resolution
+    y = y * topology_.resolution
+
+    _, _, yaw = euler_from_quaternion(topology_.topology_orient[0],
+                                    topology_.topology_orient[1],
+                                    topology_.topology_orient[2],
+                                    topology_.topology_orient[3])
+
+    x = x - topology_.topology_origin[0]
+    y = y - topology_.topology_origin[1]
+
+    x_ = x * math.cos(yaw) - y * math.sin(yaw)
+    y_ = x * math.sin(yaw) + y * math.cos(yaw)
+
+
+    x_ = x_ + topology_.map_origin[0]
+    y_ = y_ + topology_.map_origin[1]
+
+    print("Add new vertex {} at {},{}".format(new_id, x_, y_))
+
+    topology_.vertices[new_id] = Vertex(id = new_id,
+                                        x = x_,
+                                        y = y_)
+
+    return jsonify({'id': new_id})
+
+
+@app.route('/add_new_edge', methods=['POST'])
+def add_new_edge():
+
+    data = request.get_json()
+    
+    src = data['src']
+    dst = data['dst']
+    cost = data['cost']
+    type = data['type']
+
+    if src in topology_.edges:
+        topology_.edges[src].append(Edge(src = src,
+                                         dst = dst,
+                                         cost = cost,
+                                         type = type))
+    else:
+        topology_.edges[src] = \
+            [Edge(src = src,
+                  dst = dst,
+                  cost = cost,
+                  type = type)]
+        
+    return jsonify(success=True)
+
+@app.route('/connect_edges', methods=['POST'])
+def connect_edges():
+
+    data = request.get_json()
+    
+    idList = data['idList']
+    type = data['type']
+
+    for i in range(len(idList)-1):
+        srcID = 'T_' + str(idList[i])
+        dstID = 'T_' + str(idList[i+1])
+
+        if srcID not in topology_.vertices or dstID not in topology_.vertices:
+            continue
+
+        cost = get_distance(topology_.vertices[srcID],
+                            topology_.vertices[dstID])
+        
+        if srcID in topology_.edges:
+            topology_.edges[srcID].append(Edge(src = srcID,
+                                               dst = dstID,
+                                               cost = cost,
+                                               type = type))
+        else:
+            topology_.edges[srcID] = [Edge(src = srcID,
+                                               dst = dstID,
+                                               cost = cost,
+                                               type = type)]
+    return jsonify(success=True)
+
 
 
 if __name__ == '__main__':
