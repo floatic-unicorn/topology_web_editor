@@ -10,6 +10,12 @@ function loadMarkers(vertices, edges) {
         marker.style.left = xOnImage + 'px';
         marker.style.bottom = yOnImage + 'px';
 
+        const idLabel = document.createElement('div');
+        idLabel.className = 'marker-id';
+        idLabel.textContent = vertex.id;
+
+        marker.appendChild(idLabel);
+
         // Make the marker draggable using interact.js
         interact(marker)
             .draggable({
@@ -106,6 +112,12 @@ function addMarker(x, y, id) {
     marker.id = id;
     marker.style.left = x + 'px';
     marker.style.bottom = y + 'px';
+
+    const idLabel = document.createElement('div');
+    idLabel.className = 'marker-id';
+    idLabel.textContent = id;
+
+    marker.appendChild(idLabel);
 
     // Make the marker draggable using interact.js
     interact(marker)
