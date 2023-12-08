@@ -1,5 +1,5 @@
 from model.topology import Topology, Vertex, Edge
-from utils.geometry import euler_from_quaternion
+from utils.geometry import get_distance
 import math
 
 # Topology Constructor: Set origin data
@@ -88,10 +88,7 @@ def get_raw_topology(topology: Topology):
         x_val = (topology.vertices[id].x - topology.map_origin[0])/topology.resolution
         y_val = (topology.vertices[id].y - topology.map_origin[1])/topology.resolution
 
-        _, _, yaw = euler_from_quaternion(topology.topology_orient[0],
-                                          topology.topology_orient[1],
-                                          topology.topology_orient[2],
-                                          topology.topology_orient[3])
+        yaw =topology.get_yaw()
 
         x_val_ = (x_val - topology.topology_origin[0]) * math.cos(-yaw) - (y_val - topology.topology_origin[1]) * math.sin(-yaw)
         y_val_ = (x_val - topology.topology_origin[0]) * math.sin(-yaw) + (y_val - topology.topology_origin[1]) * math.cos(-yaw)
@@ -101,15 +98,84 @@ def get_raw_topology(topology: Topology):
                             'y': y_val_})
         
     for id in topology.vertices:
-
         if id not in topology.edges:
             continue
 
-        edges = topology.edges[id]
-
-        for edge in edges:
+        for edge in topology.edges[id]:
             edge_list.append({'src': edge.src,
                               "dst": edge.dst,
                               'cost': edge.cost})
             
     return vertex_list, edge_list
+
+def update_vertex(topology: Topology, id, dx, dy):
+
+    yaw = topology.get_yaw()
+
+    dx_ = dx * math.cos(yaw) - dy * math.sin(yaw)
+    dy_ = dx * math.sin(yaw) + dy * math.cos(yaw)
+
+    print("Update vertex {}".format(id))
+    topology.vertices[id] = topology.vertices[id].update(dx_, dy_)
+
+    return
+
+def add_vertex(topology: Topology, x, y):
+
+    ids = [int(id.split('_')[1]) for id in topology.vertices]
+    if not ids:
+        new_id = 'T_0'
+    else:
+        new_id = 'T_' + str(max(ids)+1)
+
+    x = x * topology.resolution
+    y = y * topology.resolution
+
+    yaw = topology.get_yaw()
+
+    x = x - topology.topology_origin[0]
+    y = y - topology.topology_origin[1]
+
+    x_ = x * math.cos(yaw) - y * math.sin(yaw)
+    y_ = x * math.sin(yaw) + y * math.cos(yaw)
+
+
+    x_ = x_ + topology.map_origin[0]
+    y_ = y_ + topology.map_origin[1]
+
+    print("Add new vertex {} at {},{}".format(new_id, x_, y_))
+    topology.vertices[new_id] = Vertex(id = new_id, x = x_, y = y_)
+
+    return new_id
+
+def add_edge(topology: Topology, src, dst, cost, type):
+
+    if src in topology.edges:
+        topology.edges[src].append(Edge(src = src,
+                                        dst = dst,
+                                        cost = cost,
+                                        type = type))
+    else:
+        topology.edges[src] = [Edge(src = src,
+                                    dst = dst,
+                                    cost = cost,
+                                    type = type)]
+                
+    print("Add new edge from {} to {}".format(src, dst))
+    return 
+
+def connect_edges(topology: Topology, id_list, type):
+
+    for i in range(len(id_list)-1):
+        srcID = 'T_' + str(id_list[i])
+        dstID = 'T_' + str(id_list[i+1])
+
+        if srcID not in topology.vertices or dstID not in topology.vertices:
+            continue
+
+        cost = get_distance(topology.vertices[srcID],
+                            topology.vertices[dstID])
+        
+        add_edge(topology, srcID, dstID, cost, type)
+            
+    return
