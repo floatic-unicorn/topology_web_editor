@@ -30,3 +30,13 @@ class Topology:
         self.topology_origin = []
         self.topology_orient = []
         self.resolution = 0.0
+
+    def get_yaw(self):
+        
+        from utils.geometry import euler_from_quaternion
+        _, _, yaw = euler_from_quaternion(self.topology_orient[0],
+                                          self.topology_orient[1],
+                                          self.topology_orient[2],
+                                          self.topology_orient[3])
+        
+        return yaw

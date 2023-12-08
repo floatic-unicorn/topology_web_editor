@@ -1,0 +1,7 @@
+function createMarker() {
+
+}
+
+function deleteMarker() {
+    
+}
