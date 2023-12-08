@@ -1,5 +1,5 @@
 import math
-from topology import Vertex
+from model.topology import Vertex
 
 def euler_from_quaternion(x, y, z, w):
     t0 = 2.0 * (w*x + y*z)
