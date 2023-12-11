@@ -4,6 +4,7 @@
     <title>Topology Editor</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.11/dist/interact.min.js"></script>
+    <script src="visualize.js"></script>
     <script src="fileIO.js"></script>
     <script src="editor.js"></script>
     <script src="kb_handler.js"></script>
@@ -16,6 +17,8 @@
         <div id="markerContainer"></div>
     </div>
 
+    <canvas id="visualizedEdges" width="1772" height="1077"></canvas>
+
     <label for="dataFile">Enter map file:</label><br>
     <input type="text" id="dataFile" accept=".yaml, .yml" placeholder="/opt/floatic/config/env/map/navigation/map.yaml" onkeydown="handleTab(event, 'dataFile')" oninput="handleInput(event,'dataFile')">
     <button id="loadMapDataButton" onclick="loadMapFromFile()">Load</button><br>
@@ -25,13 +28,12 @@
     <button id="loadTopologyButton" onclick="loadTopologyFromFile()">Load</button><br>
 
     <br><label for="outputFile">Enter output topology file:</label><br>
-    <input type="text" id="outputFile" accept=".yaml, .yml" placeholder="Enter output filepath">
+    <input type="text" id="outputFile" accept=".yaml, .yml" placeholder="/opt/floatic/config/env/map/navigation/topology.yaml" onkeydown="handleTab(event, 'outputFile')" oninput="handleInput(event,'outputFile')">
     <button id="saveButton" onclick="saveToFile()">Save</button><br>
 
     <br><label for="newEdge">Enter srcID,dstID,cost,rack:</label><br>
     <input type="text" id="newEdge" placeholder="ex. T_3,T_5,3.0,rack">
     <button id="connectEdge" onclick="addEdge()">Update</button><br>
-
 
     <br><label for="connectEdges">Connect edge range with default cost: </label><br>
     <input type="text" id="connectEdges" placeholder="[3,10,5],rack">

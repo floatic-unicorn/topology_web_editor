@@ -56,7 +56,7 @@ function loadTopologyFromFile() {
                 .then(data => {
                     const vertices = data.vertices;
                     const edges = data.edges;
-                    loadMarkers(vertices, edges);
+                    drawTopology(vertices, edges);
                 })
                 .catch(error => {
                     alert('Error loading topology markers.');
