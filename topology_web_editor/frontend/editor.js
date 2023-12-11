@@ -1,4 +1,4 @@
-function loadMarkers(vertices, edges) {
+function drawTopology(vertices, edges) {
     const markerContainer = document.getElementById('markerContainer');
 
     vertices.forEach(vertex => {
@@ -33,6 +33,12 @@ function loadMarkers(vertices, edges) {
 
         markerContainer.appendChild(marker);
     });
+
+    // Visualize edges
+    const edgeCanvas = document.getElementById('visualizedEdges');
+    const ctx = edgeCanvas.getContext('2d');
+    ctx.clearRect(0, 0, edgeCanvas.width, edgeCanvas.height);
+    drawEdges(edges, ctx);
 }
 
 // Create function to send vertex position (pixel coordinates) updates to server
@@ -65,6 +71,7 @@ function updateVertexPosition(marker, dx, dy) {
 }
 
 function addNewVertex() {
+
     document.getElementById('imageContainer').addEventListener('click', function (event) {
         if (event.target.id === 'mapImage') {
           const x = event.clientX;
