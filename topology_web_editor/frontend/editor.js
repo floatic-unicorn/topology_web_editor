@@ -83,6 +83,23 @@ function addMarker(x, y, id) {
 
     marker.appendChild(idLabel);
 
+    // Make marker removable via right-click
+    marker.addEventListener('contextmenu', function(event) {
+        // Prevent the default context menu from showing
+        event.preventDefault();
+
+        // Create a "Remove" button
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.addEventListener('click', function () {
+            // Remove the marker when the "Remove" button is clicked
+            markerContainer.removeChild(marker);
+            removeVertex(marker.id);
+        });
+
+        marker.appendChild(removeButton);
+    });
+
     // Make the marker draggable using interact.js
     interact(marker)
         .draggable({
@@ -170,5 +187,29 @@ function connectEdges() {
     })
     .catch(error => {
         statusDiv.textContent = 'Error loading connect edges';
+    });
+}
+
+function removeVertex(id) {
+
+    const requestData = {'id': id };
+
+    fetch('http://127.0.0.1:5000/remove_vertex', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            statusDiv.textContent = 'Vertex removed successfully!';
+        } else {
+            statusDiv.textContent = 'Error removing vertex.';
+        }
+    })
+    .catch(error => {
+        statusDiv.textContent = 'Error loading remove vertex';
     });
 }

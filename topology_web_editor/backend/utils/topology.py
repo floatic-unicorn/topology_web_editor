@@ -148,6 +148,20 @@ def add_vertex(topology: Topology, x, y):
 
     return new_id
 
+def remove_vertex(topology: Topology, id):
+
+    if id in topology.vertices:
+        del topology.vertices[id]
+
+    if id in topology.edges:
+        del topology.edges[id]
+
+    for edge_src in topology.edges:
+        for edge in topology.edges[edge_src]:
+            if edge.dst == id:
+                del edge
+
+
 def add_edge(topology: Topology, src, dst, cost, type):
 
     if src in topology.edges:

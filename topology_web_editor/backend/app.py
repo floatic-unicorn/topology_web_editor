@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import yaml
-import math
 
 from model.topology import Topology
 from utils.topology import *
@@ -122,6 +121,15 @@ def add_new_edge():
 
     add_edge(topology_, src, dst, cost, type)
         
+    return jsonify(success=True)
+
+@app.route('/remove_vertex', methods=['POST'])
+def remove_vertex_with_edges():
+
+    data = request.get_json()
+
+    remove_vertex(topology_, data['id'])
+
     return jsonify(success=True)
 
 @app.route('/connect_edges', methods=['POST'])
