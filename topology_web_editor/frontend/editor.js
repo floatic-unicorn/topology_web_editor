@@ -1,3 +1,79 @@
+function addSingleVertex() {
+
+    document.getElementById('imageContainer').addEventListener('click', function (event) {
+        if (event.target.id === 'mapImage') {
+            const x = event.clientX;
+            const y = event.clientY;
+
+            /* Add to topology and get ID as response */
+            const image = event.target.getBoundingClientRect();
+            const relX = x - image.left;
+            const relY = image.bottom - y;
+
+            addVertex(relX, relY);
+        }
+    });
+}
+
+function addMultipleVertices(interval_in_pixels) {
+    const imageContainer = document.getElementById('imageContainer');
+
+    let startX, startY;
+
+    imageContainer.addEventListener('contextmenu', function (event) {
+        event.preventDefault();
+    });
+
+    imageContainer.addEventListener('mousedown', function (event) {
+        event.preventDefault();
+
+        if (event.button === 2 && event.target.id === 'mapImage') {
+            console.log('Right-clicked on mapImage');
+
+            startX = event.clientX;
+            startY = event.clientY;
+
+            const image = event.target.getBoundingClientRect();
+
+            const relX = startX - image.left;
+            const relY = image.bottom - startY;
+            addVertex(relX, relY);
+
+            const handleMove = async function (moveEvent) {
+                moveEvent.preventDefault();
+
+                const currentX = moveEvent.clientX;
+                const currentY = moveEvent.clientY;
+
+                const deltaX = currentX - startX;
+                const deltaY = currentY - startY;
+                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+                if (distance > interval_in_pixels) {
+                    // Add the dot to topology and get ID as a response
+                    const relX = currentX - image.left;
+                    const relY = image.bottom - currentY;
+
+                    startX = currentX;
+                    startY = currentY;
+
+                    addVertex(relX, relY);
+                }
+            };
+
+            const handleRelease = function () {
+                console.log('Right-click released on mapImage');
+                document.removeEventListener('mousemove', handleMove);
+                document.removeEventListener('mouseup', handleRelease);
+            };
+
+            document.addEventListener('mousemove', handleMove);
+            document.addEventListener('mouseup', handleRelease);
+        }
+    });
+}
+
+
 // Create function to send vertex position (pixel coordinates) updates to server
 function updateVertexPosition(marker, dx, dy) {
 
@@ -24,46 +100,6 @@ function updateVertexPosition(marker, dx, dy) {
     })
     .catch(error => {
         console.error('Error updating marker position.');
-    });
-}
-
-function addNewVertex() {
-
-    document.getElementById('imageContainer').addEventListener('click', function (event) {
-        if (event.target.id === 'mapImage') {
-          const x = event.clientX;
-          const y = event.clientY;
-
-          /* Add to topology and get ID as response */
-          const image = event.target.getBoundingClientRect();
-          const relX = x - image.left;
-          const relY = image.bottom - y;
-
-          const requestData = {
-            'x': relX,
-            'y': relY,
-          };
-
-          fetch('http://127.0.0.1:5000/add_new_vertex', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.id) {
-                    console.log(`New vertex created successfully with ID: ${data.id}`);
-                    addMarker(relX, relY, data.id);
-                } else {
-                    console.error('Error creating a new vertex.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
     });
 }
 

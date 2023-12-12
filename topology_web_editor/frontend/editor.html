@@ -6,6 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.11/dist/interact.min.js"></script>
     <script src="visualize.js"></script>
     <script src="fileIO.js"></script>
+    <script src="utils/marker.js"></script>
     <script src="editor.js"></script>
     <script src="kb_handler.js"></script>
 </head>
@@ -39,7 +40,8 @@
     <input type="text" id="connectEdges" placeholder="[3,10,5],rack">
     <button id="connectEdges" onclick="connectEdges()">Update</button><br>
 
-    <script>addNewVertex()</script>
+    <script>addSingleVertex()</script>
+    <script>addMultipleVertices(40)</script>
 
 </body>
 </html>

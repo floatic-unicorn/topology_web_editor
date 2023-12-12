@@ -122,12 +122,6 @@ def update_vertex(topology: Topology, id, dx, dy):
 
 def add_vertex(topology: Topology, x, y):
 
-    ids = [int(id.split('_')[1]) for id in topology.vertices]
-    if not ids:
-        new_id = 'T_0'
-    else:
-        new_id = 'T_' + str(max(ids)+1)
-
     x = x * topology.resolution
     y = y * topology.resolution
 
@@ -143,24 +137,14 @@ def add_vertex(topology: Topology, x, y):
     x_ = x_ + topology.map_origin[0]
     y_ = y_ + topology.map_origin[1]
 
+    new_id = topology.add_vertex(x_, y_)
     print("Add new vertex {} at {},{}".format(new_id, x_, y_))
-    topology.vertices[new_id] = Vertex(id = new_id, x = x_, y = y_)
 
     return new_id
 
 def remove_vertex(topology: Topology, id):
-
-    if id in topology.vertices:
-        del topology.vertices[id]
-
-    if id in topology.edges:
-        del topology.edges[id]
-
-    for edge_src in topology.edges:
-        for edge in topology.edges[edge_src]:
-            if edge.dst == id:
-                del edge
-
+    topology.remove_vertex(id)
+    return
 
 def add_edge(topology: Topology, src, dst, cost, type):
 
