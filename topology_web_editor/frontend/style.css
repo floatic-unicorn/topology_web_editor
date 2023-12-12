@@ -1,7 +1,7 @@
 .marker {
     position: absolute;
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
     background-color: rgb(36, 171, 76);
     border-radius: 50%;
     cursor: pointer;
@@ -12,7 +12,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 12px;
+    font-size: 10px;
     color:rgb(36, 63, 171);
 }
 

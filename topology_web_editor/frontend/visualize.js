@@ -88,10 +88,10 @@ function drawArrow(ctx, srcMarker, dstMarker) {
     ctx.beginPath();
     ctx.moveTo(startX, startY);
     ctx.lineTo(endX, endY);
-    ctx.strokeStyle = 'grey';
-    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = "rgb(255, 178, 102)";
+    ctx.lineWidth = 1.8;
 
-    const arrowSize = 5;
+    const arrowSize = 7;
     const angle = Math.atan2(endY - startY, endX - startX);
     ctx.lineTo(endX - arrowSize * Math.cos(angle - Math.PI / 6), endY - arrowSize * Math.sin(angle - Math.PI / 6));
     ctx.moveTo(endX, endY);
