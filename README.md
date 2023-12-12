@@ -5,7 +5,7 @@ https://www.notion.so/Web-Editor-0eb40aebe3644e36aa41faec84ca6cf8#b823b729a74e4c
 
 기능:
 Topology 로드/저장
-Vertex 추가(클릭) / 삭제(우클릭)
+Vertex 추가(클릭) / 삭제(해당 Vertex 우클릭) / 여려개 추가 (우클릭 후 드래기)
 Edge 1개 / 여러개 추가
 
 # How to Use 
