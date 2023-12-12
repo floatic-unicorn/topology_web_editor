@@ -40,3 +40,13 @@ class Topology:
                                           self.topology_orient[3])
         
         return yaw
+    
+    def clear_map_data(self):
+        self.map_origin = []
+        self.topology_origin = []
+        self.topology_orient = []
+        self.resolution = 0.0
+
+    def clear_topology_data(self):
+        self.vertices = {}
+        self.edges = {}

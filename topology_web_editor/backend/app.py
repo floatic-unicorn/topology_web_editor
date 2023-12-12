@@ -23,8 +23,9 @@ def load_from_file():
     with open(filename, 'r') as file:
         topology = yaml.safe_load(file)
         if topology is None:
-            pass
+            return jsonify(success=True)
     
+    topology_.clear_topology_data()
     copy_topology_data_from_yaml(topology, topology_)
 
     return jsonify(success=True)
@@ -43,8 +44,9 @@ def load_data_from_file():
     with open(filename, 'r') as file:
         map_data = yaml.safe_load(file)
         if map_data is None:
-            pass
+            return jsonify(success=True)
 
+    topology_.clear_map_data()
     copy_map_data_from_yaml(map_data, topology_)
 
     return jsonify(success=True)
