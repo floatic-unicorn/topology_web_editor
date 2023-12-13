@@ -78,11 +78,9 @@ def convert_topology_to_yaml(topology: Topology, topology_yml):
 
     return
 
-# Return visualizable(map coordinate values) vertex & edge list
-def get_raw_topology(topology: Topology):
+def get_raw_vertices(topology: Topology):
 
     vertex_list = []
-    edge_list = []
 
     for id in topology.vertices:
         x_val = (topology.vertices[id].x - topology.map_origin[0])/topology.resolution
@@ -97,6 +95,12 @@ def get_raw_topology(topology: Topology):
                             'x': x_val_,
                             'y': y_val_})
         
+    return vertex_list
+
+def get_raw_edges(topology: Topology):
+
+    edge_list = []
+
     for id in topology.vertices:
         if id not in topology.edges:
             continue
@@ -105,6 +109,14 @@ def get_raw_topology(topology: Topology):
             edge_list.append({'src': edge.src,
                               "dst": edge.dst,
                               'cost': edge.cost})
+            
+    return edge_list
+
+# Return visualizable(map coordinate values) vertex & edge list
+def get_raw_topology(topology: Topology):
+
+    vertex_list = get_raw_vertices(topology)
+    edge_list = get_raw_edges(topology)
             
     return vertex_list, edge_list
 

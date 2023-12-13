@@ -18,13 +18,13 @@ function saveToFile() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                statusDiv.textContent = 'Topology saved successfully!';
+                console.log('Topology saved successfully!');
             } else {
-                statusDiv.textContent = 'Error writing to YAML file.';
+                console.log('Error writing to YAML file.');
             }
         })
         .catch(error => {
-            statusDiv.textContent = 'Error writing to YAML file.';
+            console.error('Error:', error);
         });
     }
 }
@@ -56,17 +56,18 @@ function loadTopologyFromFile() {
                 .then(data => {
                     const vertices = data.vertices;
                     const edges = data.edges;
+                    console.log('Topology data loaded successfully!');
                     drawTopology(vertices, edges);
                 })
                 .catch(error => {
-                    alert('Error loading topology markers.');
+                    console.error('Error:', error);
                 });
             } else {
                 alert('Error loading YAML file.');
             }
         })
         .catch(error => {
-            alert('Error loading YAML file.');
+            console.error('Error:', error);
         });
     }
 }
@@ -91,13 +92,13 @@ function loadMapFromFile() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                statusDiv.textContent = 'Map data loaded successfully!';
+                console.log('Map data loaded successfully!');
             } else {
-                statusDiv.textContent = 'Error loading YAML file.';
+                console.log('Error loading YAML file.');
             }
         })
         .catch(error => {
-            statusDiv.textContent = 'Error loading YAML file.';
+            console.error('Error:', error);
         });
     }
 }

@@ -44,13 +44,13 @@ function updateVertex(id, dx, dy) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            console.log('Marker position updated successfully.');
+            console.log('Vertex position updated successfully.');
         } else {
-            console.error('Error updating marker position.');
+            console.error('Error updating vertex position.');
         }
     })
     .catch(error => {
-        console.error('Error updating marker position.');
+        console.error('Error:', error);
     });
 }
 
@@ -68,13 +68,13 @@ function removeVertex(id) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            statusDiv.textContent = 'Vertex removed successfully!';
+            console.log('Vertex removed successfully!');
         } else {
-            statusDiv.textContent = 'Error removing vertex.';
+            console.error('Error removing vertex.');
         }
     })
     .catch(error => {
-        statusDiv.textContent = 'Error loading remove vertex';
+        console.error('Error:', error);
     });
 }
 
@@ -101,14 +101,17 @@ function addEdge() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            statusDiv.textContent = 'Add edge successfully!';
+            console.log('Added edges successfully!');
+            // Update visualization
+            drawEdges();
         } else {
-            statusDiv.textContent = 'Error adding edge.';
+            console.log('Error adding edge.');
         }
     })
     .catch(error => {
-        statusDiv.textContent = 'Error loading add edge';
+        console.error('Error:', error);
     });
+
 }
 
 function connectEdges() {
@@ -140,12 +143,59 @@ function connectEdges() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            statusDiv.textContent = 'Connected edges successfully!';
+            console.log('Connected edges successfully!');
+            // Update visualization
+            drawEdges();
         } else {
-            statusDiv.textContent = 'Error connecting edge.';
+            console.log('Error connecting edge.');
         }
     })
     .catch(error => {
-        statusDiv.textContent = 'Error loading connect edges';
+        console.error('Error:', error);
+    });
+}
+
+function get_topology() {
+
+    fetch('http://127.0.0.1:5000/get_visualized_topology', {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+        const vertices = data.vertices;
+        const edges = data.edges;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+    return vertices, edges;
+}
+
+function get_vertices() {
+
+    fetch('http://127.0.0.1:5000/get_visualized_vertices', {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+        const vertices = data.vertices;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function get_edges() {
+
+    fetch('http://127.0.0.1:5000/get_visualized_edges', {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+        const edges = data.edges;
+    })
+    .catch(error => {
+        console.error('Error:', error);
     });
 }

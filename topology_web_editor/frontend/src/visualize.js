@@ -28,6 +28,7 @@ function drawTopology(vertices, edges) {
                 // Remove the marker when the "Remove" button is clicked
                 markerContainer.removeChild(marker);
                 removeVertex(marker.id);
+                drawEdges_(edges);
             });
 
             marker.appendChild(removeButton);
@@ -44,7 +45,8 @@ function drawTopology(vertices, edges) {
                     target.style.left = x + 'px';
                     target.style.bottom = y + 'px';
 
-                    updateVertexPosition(target, event.dx, -event.dy);
+                    updateVertex(target.id, event.dx, -event.dy);
+                    drawEdges_(edges);
                 }
             });
 
@@ -52,17 +54,31 @@ function drawTopology(vertices, edges) {
     });
 
     // Visualize edges
-    const edgeCanvas = document.getElementById('visualizedEdges');
-    const ctx = edgeCanvas.getContext('2d');
-    ctx.clearRect(0, 0, edgeCanvas.width, edgeCanvas.height);
-    drawEdges(edges, ctx);
+    drawEdges_(edges);
 }
 
 
-function drawEdges(edges, ctx) {
+function drawEdges() {
 
-    // Get all markers with the class 'marker'
-    const vertexMarkers = document.querySelectorAll('.marker');
+    fetch('http://127.0.0.1:5000/get_visualized_edges', {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+        const edges = data.edges;
+        drawEdges_(edges);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function drawEdges_(edges) {
+
+    // Visualize edges
+    const edgeCanvas = document.getElementById('visualizedEdges');
+    const ctx = edgeCanvas.getContext('2d');
+    ctx.clearRect(0, 0, edgeCanvas.width, edgeCanvas.height);
 
     // Iterate over edges and draw arrows
     edges.forEach(edge => {

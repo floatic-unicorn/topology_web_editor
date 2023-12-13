@@ -82,6 +82,21 @@ def get_visualized_topology():
                    edges = edge_list)
 
 
+@app.route('/get_visualized_vertices', methods=['GET'])
+def get_visualized_vertices():
+    vertex_list = get_raw_vertices(topology_)
+    
+    return jsonify(vertices = vertex_list) 
+
+
+@app.route('/get_visualized_edges', methods=['GET'])
+def get_visualized_edges():
+
+    edge_list = get_raw_edges(topology_)
+    
+    return jsonify(edges = edge_list) 
+
+
 @app.route('/update_vertex_position', methods=['POST'])
 def update_vertex_position():
 
